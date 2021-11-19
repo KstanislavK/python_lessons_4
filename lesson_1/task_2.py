@@ -1,16 +1,19 @@
-"""Каждое из слов «class», «function», «method» записать в байтовом типе
+"""
+Каждое из слов «class», «function», «method» записать в байтовом типе
 без преобразования в последовательность кодов
 (не используя методы encode и decode) и определить тип,
-содержимое и длину соответствующих переменных."""
+содержимое и длину соответствующих переменных.
+"""
 
 
 def binary_task(bi_words):
     for item in bi_words:
-        print(f"{type(item)} = {item} = len: {len(item)}")
+        elem = eval(f"b'{item}'")
+        print(f"{elem} => type: {type(elem)} => len: {len(elem)}")
 
 
 def main():
-    words = [b'class', b'function', b'method']
+    words = ['class', 'function', 'method']
     binary_task(words)
 
 

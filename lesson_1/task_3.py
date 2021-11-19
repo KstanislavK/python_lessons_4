@@ -4,8 +4,10 @@
 
 def encoding_strings(words):
     for item in words:
-        enc_str = str.encode(item, encoding='utf-8')
-        print(enc_str, type(enc_str))
+        try:
+            item.encode('ascii')
+        except UnicodeEncodeError:
+            print(f'Слово "{item}" невозможно записать в байтах')
 
 
 def main():
