@@ -1,8 +1,13 @@
 import argparse
+import sys
 import time
-from socket import socket, AF_INET, SOCK_STREAM
+import logging
+import log.Client.client_log_config
 
+from socket import socket, AF_INET, SOCK_STREAM
 from lesson_3.common.utils import send_message, get_data_from_message, load_setting
+
+logger = logging.getLogger('client')
 
 
 def presence(sock):
@@ -16,12 +21,15 @@ def presence(sock):
         }
     }
     send_message(sock, msg_presence)
-    response = sock.recv(1000000)
+    try:
+        response = sock.recv(1000000)
+    except Exception:
+        logger.exception('Ошибка приема ответа с сервера')
+        sys.exit(1)
     return get_data_from_message(response)
 
 
-if __name__ == '__main__':
-
+def main():
     SETTINGS = load_setting(is_server=False)
     parser = argparse.ArgumentParser(description='Client arguments')
     parser.add_argument('addr', type=str, nargs='*', default='', help='Server address')
@@ -29,17 +37,27 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if not args.addr:
-        server_addr = SETTINGS["DEFAULT_IP_ADDRESS"]
+        server_addr = SETTINGS['DEFAULT_IP_ADDRESS']
+        logger.warning('АДрес изменен на дрес по умолчанию')
     else:
-        server_addr = args.addr
+        server_addr = args.port
 
     if not args.port:
-        server_port = SETTINGS["DEFAULT_PORT"]
+        server_port = SETTINGS['DEFAULT_PORT']
+        logger.warning('Порт изменен на порт по умолчанию')
     else:
         server_port = args.port
 
-    s = socket(AF_INET, SOCK_STREAM)  # Создать сокет TCP
-    s.connect((server_addr, server_port))  # Соединиться с сервером
-    print('Сообщение от сервера: ', presence(s))
-
+    s = socket(AF_INET, SOCK_STREAM)
+    try:
+        s.connect((server_addr, server_port))
+    except ConnectionRefusedError:
+        logger.critical('Ошибка подключения к серверу')
+        sys.exit(1)
+    response = presence(s)
+    logger.debug('Сообщение: ', response)
     s.close()
+
+
+if __name__ == '__main__':
+    main()
