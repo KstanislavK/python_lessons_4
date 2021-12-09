@@ -1,10 +1,7 @@
-import pathlib
 import unittest
-import sys
 from socket import socket, AF_INET, SOCK_STREAM
 from unittest.mock import Mock
 
-sys.path.insert(1, str(pathlib.Path(__file__).parent))
 from lesson_3 import Client
 
 

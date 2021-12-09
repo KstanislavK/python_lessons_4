@@ -2,14 +2,15 @@ import argparse
 import sys
 import time
 import logging
-import log.Client.client_log_config
 
 from socket import socket, AF_INET, SOCK_STREAM
-from lesson_3.common.utils import send_message, get_data_from_message, load_setting
+from common.utils import send_message, get_data_from_message, load_setting
+from decos import log
 
 logger = logging.getLogger('client')
 
-
+@log
+# @Log('info')
 def presence(sock):
     msg_presence = {
         "action": "presence",
@@ -28,9 +29,10 @@ def presence(sock):
         sys.exit(1)
     return get_data_from_message(response)
 
-
+@log
+# @Log('info')
 def main():
-    SETTINGS = load_setting(is_server=False)
+    SETTINGS = load_setting(is_server=False, filename='common/settings.json')
     parser = argparse.ArgumentParser(description='Client arguments')
     parser.add_argument('addr', type=str, nargs='*', default='', help='Server address')
     parser.add_argument('port', type=int, nargs='*', default='', help='server port')
@@ -38,7 +40,7 @@ def main():
 
     if not args.addr:
         server_addr = SETTINGS['DEFAULT_IP_ADDRESS']
-        logger.warning('АДрес изменен на дрес по умолчанию')
+        logger.warning('Адрес изменен на адрес по умолчанию')
     else:
         server_addr = args.port
 
