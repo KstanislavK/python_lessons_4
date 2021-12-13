@@ -2,7 +2,7 @@ import json
 import sys
 
 from common.params import ENCODING
-from common.errors import IncorrectDataRecivedError, NonDictInputError
+from common.errors import IncorrectDataRecievedError, NonDictInputError
 from common.params import MAX_PACKAGE_LENGTH
 
 sys.path.append('../')
@@ -18,8 +18,8 @@ def get_message(client):
         response = json.loads(json_response)
         if isinstance(response, dict):
             return response
-        raise IncorrectDataRecivedError
-    raise IncorrectDataRecivedError
+        raise IncorrectDataRecievedError
+    raise IncorrectDataRecievedError
 
 
 @log
