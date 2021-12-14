@@ -1,7 +1,9 @@
 import sys
 import os
 import logging
-from common.params import LOGGING_LEVEL
+from common.params import LOGGING_LEVEL, ENCODING
+
+
 sys.path.append('../')
 
 
@@ -16,7 +18,7 @@ PATH = os.path.join(PATH, 'client.log')
 STREAM_HANDLER = logging.StreamHandler(sys.stderr)
 STREAM_HANDLER.setFormatter(CLIENT_FORMATTER)
 STREAM_HANDLER.setLevel(logging.ERROR)
-LOG_FILE = logging.FileHandler(PATH, encoding='utf8')
+LOG_FILE = logging.FileHandler(PATH, encoding=ENCODING)
 LOG_FILE.setFormatter(CLIENT_FORMATTER)
 
 # создаём регистратор и настраиваем его

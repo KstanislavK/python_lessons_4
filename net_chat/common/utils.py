@@ -18,8 +18,10 @@ def get_message(client):
         response = json.loads(json_response)
         if isinstance(response, dict):
             return response
+        else:
+            raise IncorrectDataRecievedError
+    else:
         raise IncorrectDataRecievedError
-    raise IncorrectDataRecievedError
 
 
 @log
