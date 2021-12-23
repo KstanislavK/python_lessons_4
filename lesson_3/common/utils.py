@@ -1,7 +1,9 @@
 import json
 import logging
+from lesson_3.decos import log
 
 
+@log
 def get_logger(is_server):
     if is_server:
         return logging.getLogger('server')
@@ -16,6 +18,7 @@ def get_data_from_message(response, is_server=True):
     return json.loads(response_str)
 
 
+@log
 def send_message(socket, data_dict, is_server=True):
     logger = get_logger(is_server)
     if isinstance(data_dict, dict):
@@ -27,8 +30,10 @@ def send_message(socket, data_dict, is_server=True):
         raise TypeError
 
 
+@log
 def load_setting(is_server=True, filename='common/settings.json'):
     logger = get_logger(is_server)
+
     config_keys = ["DEFAULT_IP_ADDRESS", "DEFAULT_PORT", "MAX_CONNECTION", "MAX_PACKAGE_LENGTH", "USER"]
     if not is_server:
         config_keys.append("DEFAULT_IP_ADDRESS")
@@ -39,3 +44,11 @@ def load_setting(is_server=True, filename='common/settings.json'):
             logger.critical(f"В конфигурации отсутсвует ключ: {key}")
             raise ValueError
     return configs
+
+
+def main():
+    print(load_setting(is_server=False, filename='common/settings.json'))
+
+
+if __name__ == '__main__':
+    main()

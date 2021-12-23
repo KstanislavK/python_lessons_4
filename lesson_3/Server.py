@@ -3,13 +3,14 @@ import time
 from json import JSONDecodeError
 from socket import AF_INET, socket, SOCK_STREAM
 import logging
-import log.Server.server_log_config
+from decos import log
 
 from common.utils import send_message, get_data_from_message, load_setting
 
 logger = logging.getLogger('server')
 
 
+@log
 def send_success_code(client):
     msg_response = {
         "response": '200',
@@ -18,8 +19,9 @@ def send_success_code(client):
     send_message(client, msg_response)
 
 
+@log
 def main():
-    SETTINGS = load_setting(is_server=False)
+    SETTINGS = load_setting(is_server=False, filename='common/settings.json')
     parser = argparse.ArgumentParser(description='Server arguments')
     parser.add_argument('addr', type=str, nargs='*', default='', help='Clients address')
     parser.add_argument('port', type=int, nargs='*', default='', help='server port')
@@ -27,7 +29,7 @@ def main():
 
     if not args.port:
         server_port = SETTINGS["DEFAULT_PORT"]
-        logger.warning("Успользуются порт сервера по умолчанию")
+        logger.warning("Успользуется порт сервера по умолчанию")
     else:
         server_port = args.port
 
