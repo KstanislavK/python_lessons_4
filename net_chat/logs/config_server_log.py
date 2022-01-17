@@ -1,9 +1,9 @@
 import sys
 import os
 import logging
-import logging.handlers
-from common.params import LOGGING_LEVEL, ENCODING
 sys.path.append('../')
+from common.params import LOGGING_LEVEL, ENCODING
+
 
 # создаём формировщик логов (formatter):
 SERVER_FORMATTER = logging.Formatter('%(asctime)s %(levelname)s %(filename)s %(message)s')
@@ -16,7 +16,7 @@ PATH = os.path.join(PATH, 'server.log')
 STREAM_HANDLER = logging.StreamHandler(sys.stderr)
 STREAM_HANDLER.setFormatter(SERVER_FORMATTER)
 STREAM_HANDLER.setLevel(logging.ERROR)
-LOG_FILE = logging.handlers.TimedRotatingFileHandler(PATH, encoding=ENCODING, interval=1, when='D')
+LOG_FILE = logging.FileHandler(PATH, encoding=ENCODING)
 LOG_FILE.setFormatter(SERVER_FORMATTER)
 
 # создаём регистратор и настраиваем его

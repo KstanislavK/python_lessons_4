@@ -8,18 +8,13 @@ while True:
     if ACTION == 'q':
         break
     elif ACTION == 's':
+        clients_count = int(input('Введите количество тестовых клиентов для запуска: '))
         PROCESS.append(subprocess.Popen('python server.py',
                                         creationflags=subprocess.CREATE_NEW_CONSOLE))
-        for i in range(1):
-            PROCESS.append(subprocess.Popen('python client.py -n Metla',
+        for i in range(clients_count):
+            PROCESS.append(subprocess.Popen(f'python client.py -n test_{i}',
                                             creationflags=subprocess.CREATE_NEW_CONSOLE))
-        for i in range(1):
-            PROCESS.append(subprocess.Popen('python client.py -n Mavrin',
-                                            creationflags=subprocess.CREATE_NEW_CONSOLE))
-        for i in range(1):
-            PROCESS.append(subprocess.Popen('python client.py -n Ozzy',
-                                            creationflags=subprocess.CREATE_NEW_CONSOLE))
+
     elif ACTION == 'x':
         while PROCESS:
-            VICTIM = PROCESS.pop()
-            VICTIM.kill()
+            PROCESS.pop().kill()
